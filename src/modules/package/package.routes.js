@@ -1,0 +1,12 @@
+import { Router } from "express";
+import auth from "../../middlewares/auth";
+import { UserRole } from "../../../prisma/generated/prisma/enums";
+import asyncHandler from "../../utils/asyncHandler";
+import { packageController } from "./package.controller";
+const router = Router();
+router.get("/", asyncHandler(packageController.getAllPackages));
+router.get("/:id", asyncHandler(packageController.getSinglePackage));
+router.delete("/:id", asyncHandler(packageController.deleteSinglePackage));
+router.post("/", auth(UserRole.ADMIN), asyncHandler(packageController.createPackage));
+router.patch("/:id", auth(UserRole.ADMIN), asyncHandler(packageController.updatePackage));
+export const packageRoutes = router;
